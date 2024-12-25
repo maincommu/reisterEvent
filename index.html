@@ -13,278 +13,218 @@
     .alert {
       display: none;
     }
-    
-    .sidebar {
-      height: 100vh;
-      width: 60px;
-      /* ขนาดย่อเริ่มต้น */
-      background-color: #343a40;
-      position: fixed;
-      top: 0;
-      left: 0;
-      transition: width 0.3s ease;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .sidebar .menu-item {
-      display: flex;
-      align-items: center;
-      /* จัดแนวกลางในแนวนอน */
-      justify-content: flex-start;
-      /* ชิดซ้าย */
-      color: #fff;
-      padding: 15px 20px;
-      /* เพิ่ม padding ซ้ายขวาให้เท่ากัน */
-      text-decoration: none;
-      transition: opacity 0.3s ease;
-      width: 100%;
-      box-sizing: border-box;
-      /* ให้การ padding มีผลไม่เกินขอบของเมนู */
-    }
-
-    .sidebar .menu-item i {
-      margin-right: 0;
-    }
-
-    .sidebar .menu-item:hover {
-      background-color: #007bff;
-    }
-
-    .sidebar .menu-item i:hover {
-      color: #fff;
-    }
-
-    .sidebar:hover {
-      width: 250px;
-    }
-
-    .sidebar:hover .menu-item i {
-      margin-right: 10px;
-    }
-
-    .sidebar:hover .menu-item span {
-      display: inline;
-    }
-
-    .sidebar .menu-item span {
-      display: none;
-
-    }
 
     .content {
+      padding: 40px;
+      position: relative;
+   
+      /* ปรับระยะห่างจากตำแหน่งกลางภาพ */
 
-      padding: 20px;
+      z-index: 1;
+      /* ทำให้ content อยู่เหนือภาพ */
+
 
     }
 
-    .menu-item-dropdown {
-      margin-left: 20px;
-      /* เพิ่มระยะด้านซ้ายสำหรับการตั้งค่า */
-      color: #fff;
-    }
 
-    .active {
-      background-color: #007bff;
-    }
-
-
+  
 
     .dropdown-menu.show {
       display: block;
     }
 
-    /* เมนูย่อย */
-    .dropdown-menu {
-      display: none;
-      background-color: #343a40;
-      position: relative;
-      padding-left: 20px;
-      /* ระยะห่างจากซ้าย */
-      border: none;
-      margin-top: 10px;
-      /* เพิ่มระยะห่างจากเมนูหลัก */
-    }
 
-    /* ทำให้รายการเมนูย่อยแสดงในบรรทัดใหม่ */
-    .menu-item-dropdown {
-      display: block;
-      /* ให้แต่ละรายการแสดงในบรรทัดใหม่ */
-      padding: 10px 0;
-      /* เพิ่มระยะห่างระหว่างบรรทัด */
-
-      text-decoration: none;
-      /* ไม่ให้มีขีดเส้นใต้ */
-    }
-
-    .menu-item-dropdown:hover {
-      display: block;
-      background-color: #007bff;
-      /* สีพื้นหลังเมื่อเอาเมาส์ไปชี้ */
+    img {
+      max-width: 100%;
+      height: auto;
     }
 
     .card {
       margin-bottom: 15px;
       padding: 20px;
-      
+
       border: none;
       box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
       background-color: white;
 
     }
+
   </style>
 </head>
 
-<body style="background-color: #f1f1f1;">
-  <br><br>
+<body style="background-color: #70e1da;">
+  <img src="imgHead.png" alt="Description of image" id="header-image">
+
   <div class="content" id="content">
+
     <div class="row">
       <div class="col-md-12 col-lg-12">
         <div class="card" style="text-align: center;">
           <div class="alert alert-success" role="alert" id="success-alert">
-            <b>Success!</b> ลงทะเบียนเรียบร้อยแล้ว
+            <P id="success-alert1"></P>
           </div>
           <div class="alert alert-danger" role="alert" id="error-alert">
             ไม่พบข้อมูลที่กรอก
           </div>
           <h1 style="color: #373737;"><b>ลงทะเบียนเข้างาน</b></h1>
+          
 
           <form id="registrationForm">
             <div class="form-group">
               <input class="form-control form-control-lg" type="text" id="IDmember" placeholder="กรอกรหัสพนักงาน">
             </div>
+            <div><br>
             <button type="submit" class="btn btn-success btn-lg">ลงทะเบียน</button>
+            </div>
+           
           </form>
         </div>
       </div>
     </div>
-
-    <table id="data-table" border="1" class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Column A</th>
-          <th>Column B</th>
-          <th>Column C</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- ข้อมูลจะถูกใส่ในตารางที่นี่ -->
-      </tbody>
+ <!-- สร้างตารางเพื่อแสดงข้อมูล -->
+ <table id="data-table" border="1" style="display: none;">
+        <thead>
+            <tr>
+                <th>Column A</th>
+                <th>Column B</th>
+                <th>Column C</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- ข้อมูลจะถูกใส่ในตารางที่นี่ -->
+        </tbody>
     </table>
-  </div>
 
-  <script>
-    google.charts.load('current', {
-      packages: ['corechart', 'table']
-    });
 
-    google.charts.setOnLoadCallback(drawTable);
+    <script>
+      window.updateImageSize = function() {
+        // ดึงขนาดของภาพ
+        const img = document.getElementById('header-image');
+        const imgWidth = img.clientWidth; // ความกว้างของภาพ
+        const imgHeight = img.clientHeight / 1.7; // ความสูงของภาพ
 
-    let sheetData = [];
+        // กำหนดให้ content อยู่หลังภาพและใช้ขนาดภาพ
+        var content = document.getElementById('content');
+        content.style.top = '-' + String(imgHeight) + 'px'; // ให้ content เริ่มจากด้านล่างของภาพ
 
-    function drawTable() {
-      var queryString = encodeURIComponent('SELECT A, B, C');
-      var dataSourceUrl = 'https://docs.google.com/spreadsheets/d/1j82I1yPxj5BM0Wu15XDccS0nPCxb11wwXUWDtRbB9R4/gviz/tq?tqx=out:csv&tq=' + queryString;
+        var message = "ความสูงของภาพ: " + imgHeight + "px";
+        document.getElementById('message').textContent = message; // ใช้ textContent สำหรับข้อความที่แสดง
 
-      var query = new google.visualization.Query(dataSourceUrl);
-      query.send(handleQueryResponse);
-    }
+      }; // เรียกฟังก์ชันเมื่อหน้าโหลดเสร็จ
+      window.onload = updateImageSize;
 
-    function handleQueryResponse(response) {
-      if (response.isError()) {
-        alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-        return;
+      // อัพเดตขนาดเมื่อหน้าต่างเปลี่ยนขนาด
+      window.onresize = updateImageSize;
+
+      google.charts.load('current', {
+        packages: ['corechart', 'table']
+      });
+
+      google.charts.setOnLoadCallback(drawTable);
+
+      let sheetData = [];
+
+      function drawTable() {
+        var queryString = encodeURIComponent('SELECT A, B, C');
+        var dataSourceUrl = 'https://docs.google.com/spreadsheets/d/1j82I1yPxj5BM0Wu15XDccS0nPCxb11wwXUWDtRbB9R4/gviz/tq?tqx=out:csv&tq=' + queryString;
+
+        var query = new google.visualization.Query(dataSourceUrl);
+        query.send(handleQueryResponse);
       }
 
-      var data = response.getDataTable();
-      sheetData = [];
-      var tableBody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-
-      tableBody.innerHTML = "";
-
-      for (var i = 0; i < data.getNumberOfRows(); i++) {
-        var row = tableBody.insertRow();
-        var rowData = [];
-        for (var j = 0; j < data.getNumberOfColumns(); j++) {
-          var cell = row.insertCell();
-          cell.textContent = data.getValue(i, j);
-          rowData.push(data.getValue(i, j));
+      function handleQueryResponse(response) {
+        if (response.isError()) {
+          alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+          return;
         }
-        sheetData.push(rowData);
-      }
-    }
 
-    document.getElementById('registrationForm').addEventListener('submit', function(event) {
-      event.preventDefault();
+        var data = response.getDataTable();
+        sheetData = [];
+        var tableBody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
 
-      var inputID = document.getElementById('IDmember').value;
-      var found = false;
-      var correspondingBValue = "";
+        tableBody.innerHTML = "";
 
-      for (var i = 0; i < sheetData.length; i++) {
-        if (String(sheetData[i][0]) === inputID) {
-          correspondingBValue1 = sheetData[i][0];
-          correspondingBValue2 = sheetData[i][1];
-          found = true;
-          break;
+        for (var i = 0; i < data.getNumberOfRows(); i++) {
+          var row = tableBody.insertRow();
+          var rowData = [];
+          for (var j = 0; j < data.getNumberOfColumns(); j++) {
+            var cell = row.insertCell();
+            cell.textContent = data.getValue(i, j);
+            rowData.push(data.getValue(i, j));
+          }
+          sheetData.push(rowData);
         }
       }
 
-      if (found) {
-        document.getElementById('success-alert').style.display = 'block';
-        document.getElementById('error-alert').style.display = 'none';
-        document.getElementById('success-alert').innerHTML = '<b>Success!</b> ลงทะเบียนเรียบร้อยแล้ว: ชื่อ ' + correspondingBValue;
-        const formData = new FormData();
-formData.append('entry.1671374310', correspondingBValue1);
-formData.append('entry.1864902708', correspondingBValue2);
-formData.append('entry.2012873468', '1');
+      document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-fetch('https://docs.google.com/forms/u/0/d/e/1FAIpQLSefKnkhT_a7gjrXhWs7nm1DqxUOvyxHS7d37oPXXQ5gxCzkdw/formResponse', {
-    method: 'POST',
-    body: formData
-})
-.then(response => {
-    if (response.ok) {
-        console.log('Form submitted successfully!');
-    } else {
-        console.log('Failed to submit form');
-    }
-})
-.catch(error => console.error('Error submitting form:', error));
+        var inputID = document.getElementById('IDmember').value;
+        var found = false;
+        var correspondingBValue = "";
 
-
-        // เรียกใช้ฟังก์ชันส่งข้อมูลไป Google Sheets
-        sendToGoogleSheets(inputID, correspondingBValue);
-      } else {
-        document.getElementById('error-alert').style.display = 'block';
-        document.getElementById('success-alert').style.display = 'none';
-      }
-    });
-
-    function sendToGoogleSheets(inputID, correspondingBValue) {
-      // ส่งข้อมูลไปยัง Google Apps Script
-      var url = 'https://script.google.com/macros/s/AKfycbyXc93I5HqKJWJTC7_5hAoxZrCNv8mFnGaqm2X2Y7-v3f1xSnMoEFHsYyTVKeeblExG/exec';  // เปลี่ยนเป็น URL ของ Google Apps Script Web App
-
-      var params = {
-        method: 'POST',
-        payload: {
-          'IDmember': inputID,
-          'name': correspondingBValue
+        for (var i = 0; i < sheetData.length; i++) {
+          if (String(sheetData[i][0]) === inputID) {
+            correspondingBValue1 = sheetData[i][0];
+            correspondingBValue2 = sheetData[i][1];
+            found = true;
+            break;
+          }
         }
-      };
 
-      fetch(url, params)
-        .then(response => response.json())
-        .then(data => {
-          console.log('Data sent to Google Sheets:', data);
-        })
-        .catch(error => {
-          console.error('Error sending data to Google Sheets:', error);
-        });
-    }
-    
+        if (found) {
+          document.getElementById('success-alert').style.display = 'block';
+          document.getElementById('error-alert').style.display = 'none';
+          document.getElementById('success-alert1').innerHTML = '<b>Success!</b> ลงทะเบียนเรียบร้อยแล้ว: ชื่อ ' + correspondingBValue2;
+          const formData = new FormData();
+          formData.append('entry.1671374310', correspondingBValue1);
+          formData.append('entry.1864902708', correspondingBValue2);
+          formData.append('entry.2012873468', '1');
 
-  </script>
+          fetch('https://docs.google.com/forms/u/0/d/e/1FAIpQLSefKnkhT_a7gjrXhWs7nm1DqxUOvyxHS7d37oPXXQ5gxCzkdw/formResponse', {
+              method: 'POST',
+              body: formData
+            })
+            .then(response => {
+              if (response.ok) {
+                console.log('Form submitted successfully!');
+              } else {
+                console.log('Failed to submit form');
+              }
+            })
+            .catch(error => console.error('Error submitting form:', error));
+
+
+          // เรียกใช้ฟังก์ชันส่งข้อมูลไป Google Sheets
+          sendToGoogleSheets(inputID, correspondingBValue);
+        } else {
+          document.getElementById('error-alert').style.display = 'block';
+          document.getElementById('success-alert').style.display = 'none';
+        }
+      });
+
+      function sendToGoogleSheets(inputID, correspondingBValue) {
+        // ส่งข้อมูลไปยัง Google Apps Script
+        var url = 'https://script.google.com/macros/s/AKfycbyXc93I5HqKJWJTC7_5hAoxZrCNv8mFnGaqm2X2Y7-v3f1xSnMoEFHsYyTVKeeblExG/exec'; // เปลี่ยนเป็น URL ของ Google Apps Script Web App
+
+        var params = {
+          method: 'POST',
+          payload: {
+            'IDmember': inputID,
+            'name': correspondingBValue
+          }
+        };
+
+        fetch(url, params)
+          .then(response => response.json())
+          .then(data => {
+            console.log('Data sent to Google Sheets:', data);
+          })
+          .catch(error => {
+            console.error('Error sending data to Google Sheets:', error);
+          });
+      }
+    </script>
 </body>
 
 </html>
