@@ -21,8 +21,8 @@
         google.charts.setOnLoadCallback(drawTable);
 
         function drawTable() {
-            // ใช้ Google Sheets ID ของคุณ
-            var queryString = encodeURIComponent('SELECT A, B, C'); // เลือกคอลัมน์ A, B, C ตามที่คุณต้องการ
+            // เปลี่ยน URL นี้ให้เป็น Google Sheets ของคุณ
+            var queryString = encodeURIComponent('SELECT A, B, C'); // เลือกคอลัมน์ A, B, C
             var dataSourceUrl = 'https://docs.google.com/spreadsheets/d/1j82I1yPxj5BM0Wu15XDccS0nPCxb11wwXUWDtRbB9R4/gviz/tq?tqx=out:csv&tq=' + queryString;
 
             var query = new google.visualization.Query(dataSourceUrl);
