@@ -8,12 +8,23 @@
 </head>
 <body>
     <h1>Data from Google Sheets</h1>
-    <table id="data-table">
-        <!-- Data from Google Sheets will be inserted here -->
+
+    <!-- สร้างตารางเพื่อแสดงข้อมูล -->
+    <table id="data-table" border="1">
+        <thead>
+            <tr>
+                <th>Column A</th>
+                <th>Column B</th>
+                <th>Column C</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- ข้อมูลจะถูกใส่ในตารางที่นี่ -->
+        </tbody>
     </table>
 
     <script>
-        // โหลด Visualization API
+        // โหลด Google Visualization API
         google.charts.load('current', {
             packages: ['corechart', 'table']
         });
@@ -21,7 +32,7 @@
         google.charts.setOnLoadCallback(drawTable);
 
         function drawTable() {
-            // เปลี่ยน URL นี้ให้เป็น Google Sheets ของคุณ
+            // URL ของ Google Sheets ที่เผยแพร่ (แทนที่ด้วย URL ของคุณ)
             var queryString = encodeURIComponent('SELECT A, B, C'); // เลือกคอลัมน์ A, B, C
             var dataSourceUrl = 'https://docs.google.com/spreadsheets/d/1j82I1yPxj5BM0Wu15XDccS0nPCxb11wwXUWDtRbB9R4/gviz/tq?tqx=out:csv&tq=' + queryString;
 
@@ -29,14 +40,29 @@
             query.send(handleQueryResponse);
         }
 
+        // ฟังก์ชันจัดการผลลัพธ์จาก Google Sheets
         function handleQueryResponse(response) {
             if (response.isError()) {
                 alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
                 return;
             }
+
             var data = response.getDataTable();
-            var table = new google.visualization.Table(document.getElementById('data-table'));
-            table.draw(data, { showRowNumber: true, width: '100%', height: '100%' });
+            var tableBody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+
+            // ลบข้อมูลเก่าก่อน
+            tableBody.innerHTML = "";
+
+            // ลูปผ่านแถวข้อมูลและแทรกข้อมูลลงในตาราง
+            for (var i = 0; i < data.getNumberOfRows(); i++) {
+                var row = tableBody.insertRow();
+                
+                // ลูปผ่านคอลัมน์ในแต่ละแถว
+                for (var j = 0; j < data.getNumberOfColumns(); j++) {
+                    var cell = row.insertCell();
+                    cell.textContent = data.getValue(i, j);
+                }
+            }
         }
     </script>
 </body>
