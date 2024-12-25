@@ -7,6 +7,11 @@
   <title>เมนูขยาย (Bootstrap)</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome Icons -->
+
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
   <style>
     .sidebar {
       height: 100vh;
@@ -67,13 +72,9 @@
     }
 
     .content {
-      margin-left: 60px;
-      padding: 20px;
-      transition: margin-left 0.3s ease-in-out;
-    }
 
-    .sidebar:hover~.content {
-      margin-left: 250px;
+      padding: 20px;
+
     }
 
     .menu-item-dropdown {
@@ -123,94 +124,115 @@
 
     .card {
       margin-bottom: 15px;
-      padding: 10px;
+      padding: 20px;
+      
       border: none;
       box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-
+      background-color: white;
 
     }
   </style>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>/
+
+
+
+
 </head>
 
-<body>
+<body style="background-color: #f1f1f1;">
+  <br><br>
+  <br><br>
+  <br><br>
+  <br><br>
+  <br><br>
+  <br><br>
+  <div class="content" id="content">
     <div class="row">
-    <div class="col-md-1 col-lg-3 col-sm-1">
-        <div class="card">Card 2</div>
-      </div>
-      <div class="col-md-10 col-lg-6 col-sm-10">
-        <div class="card">Card 1</div>
-      </div>
-      <div class="col-md-1 col-lg-3 col-sm-1">
-        <div class="card">Card 2</div>
-      </div>
-    </div>
+      <div class="col-md-12 col-lg-12">
+        <div class="card" style="text-align: center;">
+        <div class="alert alert-success" role="alert" style="display: none;">
+  <b> Success!</b> ลงทะเบียนเรียบร้อยแล้ว
+</div>
+<div class="alert alert-danger" role="alert" style="display: none;">
+  ฆไม่พบข้อมูล
+</div>
+          <h1 style="color: #373737;"><b>ลงทะเบียนเข้างาน</b></h1>
+          
+          
+          <div>
+          <div class="content" id="content">
 
-  
-
-
-
-
-
-
-    <h1>Data from Google Sheets</h1>
-
-    <!-- สร้างตารางเพื่อแสดงข้อมูล -->
-    <table id="data-table" border="1">
-        <thead>
-            <tr>
-                <th>Column A</th>
-                <th>Column B</th>
-                <th>Column C</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- ข้อมูลจะถูกใส่ในตารางที่นี่ -->
-        </tbody>
-    </table>
-
-    <script>
-        // โหลด Google Visualization API
-        google.charts.load('current', {
-            packages: ['corechart', 'table']
-        });
-
-        google.charts.setOnLoadCallback(drawTable);
-
-        function drawTable() {
-            // URL ของ Google Sheets ที่เผยแพร่ (แทนที่ด้วย URL ของคุณ)
-            var queryString = encodeURIComponent('SELECT A, B, C'); // เลือกคอลัมน์ A, B, C
-            var dataSourceUrl = 'https://docs.google.com/spreadsheets/d/1j82I1yPxj5BM0Wu15XDccS0nPCxb11wwXUWDtRbB9R4/gviz/tq?tqx=out:csv&tq=' + queryString;
-
-            var query = new google.visualization.Query(dataSourceUrl);
-            query.send(handleQueryResponse);
-        }
-
-        // ฟังก์ชันจัดการผลลัพธ์จาก Google Sheets
-        function handleQueryResponse(response) {
-            if (response.isError()) {
-                alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-                return;
-            }
-
-            var data = response.getDataTable();
-            var tableBody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-
-            // ลบข้อมูลเก่าก่อน
-            tableBody.innerHTML = "";
-
-            // ลูปผ่านแถวข้อมูลและแทรกข้อมูลลงในตาราง
-            for (var i = 0; i < data.getNumberOfRows(); i++) {
-                var row = tableBody.insertRow();
+            <form>
+              <div class="form-group">
+              <input class="form-control form-control-lg" type="text" id="IDmember" placeholder="กรอกรหัสพนักงาน">
                 
-                // ลูปผ่านคอลัมน์ในแต่ละแถว
-                for (var j = 0; j < data.getNumberOfColumns(); j++) {
-                    var cell = row.insertCell();
-                    cell.textContent = data.getValue(i, j);
-                }
-            }
+              </div>
+              </div>
+        
+<button type="submit" class="btn btn-success btn-lg">ลงทะเบียน</button>
+
+              
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <!-- สร้างตารางเพื่อแสดงข้อมูล -->
+
+
+  <script>
+    // โหลด Google Visualization API
+    google.charts.load('current', {
+      packages: ['corechart', 'table']
+    });
+
+    google.charts.setOnLoadCallback(drawTable);
+
+    function drawTable() {
+      // URL ของ Google Sheets ที่เผยแพร่ (แทนที่ด้วย URL ของคุณ)
+      var queryString = encodeURIComponent('SELECT A, B, C'); // เลือกคอลัมน์ A, B, C
+      var dataSourceUrl = 'https://docs.google.com/spreadsheets/d/1j82I1yPxj5BM0Wu15XDccS0nPCxb11wwXUWDtRbB9R4/gviz/tq?tqx=out:csv&tq=' + queryString;
+
+      var query = new google.visualization.Query(dataSourceUrl);
+      query.send(handleQueryResponse);
+    }
+
+    // ฟังก์ชันจัดการผลลัพธ์จาก Google Sheets
+    function handleQueryResponse(response) {
+      if (response.isError()) {
+        alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+        return;
+      }
+
+      var data = response.getDataTable();
+      var tableBody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+
+      // ลบข้อมูลเก่าก่อน
+      tableBody.innerHTML = "";
+
+      // ลูปผ่านแถวข้อมูลและแทรกข้อมูลลงในตาราง
+      for (var i = 0; i < data.getNumberOfRows(); i++) {
+        var row = tableBody.insertRow();
+
+        // ลูปผ่านคอลัมน์ในแต่ละแถว
+        for (var j = 0; j < data.getNumberOfColumns(); j++) {
+          var cell = row.insertCell();
+          cell.textContent = data.getValue(i, j);
         }
-    </script>
+      }
+    }
+  </script>
 </body>
+
 </html>
