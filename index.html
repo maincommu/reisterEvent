@@ -3,13 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Simple Website</title>
-    
+    <title>Google Sheets Data Display</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Welcome to My Simple Website</h1>
-    </header>
+    <h1>Data from Google Sheets</h1>
+    <table id="data-table">
+        <!-- Data from Google Sheets will be inserted here -->
+    </table>
 
+    <script>
+        // โหลด Visualization API
+        google.charts.load('current', {
+            packages: ['corechart', 'table']
+        });
+
+        google.charts.setOnLoadCallback(drawTable);
+
+        function drawTable() {
+            // ใช้ Google Sheets ID ของคุณ
+            var queryString = encodeURIComponent('SELECT A, B, C'); // เลือกคอลัมน์ A, B, C ตามที่คุณต้องการ
+            var dataSourceUrl = 'https://docs.google.com/spreadsheets/d/1j82I1yPxj5BM0Wu15XDccS0nPCxb11wwXUWDtRbB9R4/gviz/tq?tqx=out:csv&tq=' + queryString;
+
+            var query = new google.visualization.Query(dataSourceUrl);
+            query.send(handleQueryResponse);
+        }
+
+        function handleQueryResponse(response) {
+            if (response.isError()) {
+                alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                return;
+            }
+            var data = response.getDataTable();
+            var table = new google.visualization.Table(document.getElementById('data-table'));
+            table.draw(data, { showRowNumber: true, width: '100%', height: '100%' });
+        }
+    </script>
 </body>
 </html>
